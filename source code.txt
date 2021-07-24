@@ -1,0 +1,160 @@
+#pragma warning(disable  4996)
+#define _CRT_SECURE_NO_WARNINGS
+#include <iostream>
+#include <cstdio>
+#include <cmath>
+#include <algorithm>
+#include<cstring>
+#include<map>
+#include<set>
+#include<string>
+#include <climits>
+#include <vector>
+#include<bitset>
+#include<queue>
+#define endl '\n';
+typedef long long ll;
+typedef unsigned long long ull;
+typedef double dl;
+using namespace std;
+
+void fast()
+{
+	std::ios_base::sync_with_stdio(0);
+	cin.tie(NULL);
+	cout.tie(NULL);
+
+}
+struct car{
+	bool seat[30 + 1];
+	int ID;
+	double price;
+};
+car train[30];
+int n_cars, s;
+void show(){
+	cout << "*******************************************\n";
+	cout << "Enter 1 to book a ticket \n";
+	cout << "Enter 2 to show availabe seats \n";
+	cout << "Enter 3 to show the number of availabe seats \n";
+	cout << "Enter 4 to cancel a ticket \n";
+	cout << "Enter 5 exist \n";
+	cout << "*******************************************\n";
+}
+void reservation(int n){
+	bool okseat = 0, okID = 0;
+		for (int i = 1; i <= n_cars; i++){
+			if (n == train[i].ID){
+				okID = 1;
+				cout << "Please, Enter the seat you want from 1 to 30 ! \n";
+				cin >> s;
+				for (int j = 1; j <= 30; j++){
+					if (train[i].seat[j] == 0 && j == s){
+						train[i].seat[j] = 1;
+						okseat = 1;
+						break;
+					}
+					else{
+						continue;
+					}
+				}
+				if (okseat){
+					cout << "Booked successfully\n";
+					cout << "The price for this seat is : " << train[n].price << endl;
+					break;
+				}
+			}
+		}
+
+		if (!okseat && okID==1){
+			cout << "this seat isn't available\n";
+			cout << "Please , choose another seat ! \n";
+			reservation(n);
+		}
+		if (!okID ){
+			cout << "This ID is not valid . Please Enter valid ID\n";
+			int id;
+			cin >> id;
+			reservation(id);
+		}
+}
+void cancel(int a, int b){
+	train[a].seat[b] = 0;
+	cout << "Booking cancelled\n";
+}
+void freeseats(){
+	for (int i = 1; i <= n_cars; i++){
+		cout << "the seats that available in car " << i << " is ";
+		for (int j = 1; j <= 30; j++){
+			if (train[i].seat[j] == 0){
+				cout << j << " ";
+			}
+		}
+		cout << endl;
+	}
+}
+void n_free(){
+	int c = 0;
+	for (int i = 1; i <= n_cars; i++){
+		cout << "The number of available seats in car " << i << " is ";
+		for (int j = 1; j <= 30; j++){
+			if (train[i].seat[j] == 0){
+				c++;
+			}
+		}
+		cout << c << endl;
+	}
+}
+int main()
+{
+	fast();
+	int status, p;
+	cout << "please, Enter the number of cars\n";
+	cin >> n_cars;
+	for (int i = 1; i <= n_cars; i++){
+		cout << "Please, Enter the ID of the car number " << i << endl;
+		cin >> status;
+		train[i].ID = status;
+		cout << "please, Enter the price of the car number " << i << endl;
+		cin >> p;
+		train[i].price = p;
+	}
+	while (n_cars){
+		show();
+		int click;
+		cout << "Please Enter your choice\n";
+		cin >> click;
+		switch (click){
+		case 1:{
+				   int n;
+				   cout << "Please Enter the ID of the car\n";
+				   cin >> n;
+				   reservation(n);
+				   break;
+		}
+		case 2:{
+				   freeseats();
+				   break;
+		}
+		case 3:{
+				   n_free();
+				   break;
+		}
+		case 4:{
+				   int a, b;
+				   cout << "Please Enter the ID of the car and the number of the seat\n";
+				   cin >> a >> b;
+				   cancel(a, b);
+				   break;
+		}
+		case 5:{
+				   return 0;
+		}
+		default:{
+					cout << "This choise not valid\n";
+					break;
+		}
+		}
+	}
+	return 0;
+}
